@@ -25,15 +25,17 @@ export const Login = () => {
             >
                 <span>
                     {theme === "dark" ? (
-                        <Moon className="w-6 h-6 text-theme box-border p-0.5 border-2 rounded-full " />
+                        <Sun className="w-6 h-6 text-dark p-0.5 border-2 rounded-full" />
                     ) : (
-                        <Sun className="w-6 h-6 text-blue-600 p-0.5 border-2 rounded-full" />
+                        <Moon className="w-6 h-6 text-theme box-border p-0.5 border-2 rounded-full " />
                     )}
                 </span>
             </button>
             <div className="bg-neutral-300 dark:bg-neutral-800 max-w-md w-full p-8 rounded-lg shadow-md">
                 <div className="flex items-center mb-6 justify-center gap-3">
-                    <img src="logo.svg" alt="" className="size-10" />
+                    {/* <img src="logo.svg" alt="" className="size-10 " /> */}
+                    <div className="w-20 h-20 bg-theme dark:bg-dark [mask-image:url(/logo.png)] [mask-repeat:no-repeat] [mask-position:center] [mask-size:contain]" />
+
                     <h3 className="text-3xl dark:text-dark text-theme font-semibold ">
                         Opinia
                     </h3>
@@ -94,10 +96,16 @@ export const Login = () => {
                         Sign In
                     </button>
 
-                    <h4 className="text-center text-sm text-white dark:text-black">
+                    <h4 className="text-center text-sm dark:text-white text-black">
                         <a href="">Forget Password?</a>
                     </h4>
                 </form>
+                <h3 className="text-center text-md dark:text-white text-black mt-4">
+                    Don't have an account?{" "}
+                    <a href="/register" className="text-theme dark:text-dark">
+                        Register
+                    </a>
+                </h3>
             </div>
         </div>
     );

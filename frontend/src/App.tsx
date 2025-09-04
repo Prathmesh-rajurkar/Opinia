@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import { Login } from "./pages/Login";
 import Register from "./pages/Register";
+import "@theme-toggles/react/css/Within.css";
 
 function App() {
     return (
