@@ -19,7 +19,7 @@ const generateToken = (user) => {
 // REGISTER
 router.post("/register", async (req, res) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password, username } = req.body;
 
     // check existing user
     const existingUser = await db.select().from(users).where(eq(users.email, email));
@@ -33,7 +33,7 @@ router.post("/register", async (req, res) => {
     const [newUser] = await db.insert(users).values({
       email,
       password: hashedPassword,
-      name,
+      username,
     }).returning();
 
     const token = generateToken(newUser);
@@ -66,6 +66,24 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ error: "Login failed" });
   }
 });
+
+router.get("/currentUser", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ error: "No token provided" });
+
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const [user] = await db.select().from(users).where(eq(users.id, decoded.id));
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ error: "Invalid or expired token" });
+  }
+})
 
 // PROFILE (protected route)
 // router.get("/profile", async (req, res) => {

@@ -1,12 +1,16 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type SignInForm = {
     email: string;
     password: string;
 };
 export const Login = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -14,8 +18,27 @@ export const Login = () => {
     } = useForm<SignInForm>();
     const { theme, setTheme } = useTheme();
     const onSubmit = (data: SignInForm) => {
-        console.log("Sign In Data:", data);
-        // send data to API here
+        setIsLoading(true);
+        try {
+            const res = fetch("http://localhost:5000/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+            if (!res) {
+                throw new Error("Failed to register");
+            }
+
+            navigate("/");
+
+            // console.log("Registration Data:", res);
+        } catch (error) {
+            console.error("Error during registration:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-white dark:bg-black">
@@ -93,7 +116,7 @@ export const Login = () => {
                         type="submit"
                         className="text-md dark:text-white text-black p-2 dark:bg-dark bg-theme rounded-md w-full hover:bg-[#d9771b] "
                     >
-                        Sign In
+                        {isLoading ? "Loading..." : "Login"}
                     </button>
 
                     <h4 className="text-center text-sm dark:text-white text-black">

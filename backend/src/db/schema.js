@@ -9,7 +9,7 @@ export const users = pgTable("users", {
     email: varchar("email", { length: 255 }).notNull().unique(),
     password: text("password").notNull(),
     role: userRole("role").default("USER").notNull(),
-    image: text("image"),
+    image: text("image").default("https://www.gravatar.com/avatar/"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
